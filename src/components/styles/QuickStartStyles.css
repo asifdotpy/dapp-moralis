@@ -1,0 +1,17 @@
+.parent-stake-tab {
+    padding: 8px;
+}
+
+.stake-tab {
+    border: 2px solid #659BF7;
+    border-radius: 15px;
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .show>.nav-link {
+    border-radius: 15px;
+}
+
+.stake-btn {
+    border-radius: 15px;
+}
