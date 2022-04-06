@@ -10,7 +10,7 @@ function MenuItems() {
       theme="light"
       mode="horizontal"
       style={{
-        display: "flex",
+        display: "block",
         fontSize: "17px",
         fontWeight: "500",
         width: "100%",
