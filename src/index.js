@@ -22,7 +22,6 @@ const Application = () => {
     return (
       <MoralisProvider appId={APP_ID} serverUrl={SERVER_URL}>
         <App isServerInfo />
-        <h1>Hello world</h1>
       </MoralisProvider>
     );
   else {

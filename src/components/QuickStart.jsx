@@ -3,7 +3,6 @@ import React, { useMemo } from "react";
 import { useMoralis } from "react-moralis";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-
 const { Text } = Typography;
 
 const styles = {
@@ -69,10 +68,25 @@ export default function QuickStart({ isServerInfo }) {
               <span>2000%</span>
             </h5>
             <div className="input-area">
-
-              <input type="text" name="1Input" className="form-control" id="cell1Input" />
-              <div className="token-info" style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "5px" }}>
-                <img src={require('./bnbemoji.png')} style={{ width: "17px", height: "18px", margin: "5px" }} />
+              <input
+                type="text"
+                name="1Input"
+                className="form-control"
+                id="cell1Input"
+              />
+              <div
+                className="token-info"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: "5px",
+                }}
+              >
+                <img
+                  src={require("./bnbemoji.png")}
+                  style={{ width: "17px", height: "18px", margin: "5px" }}
+                />
                 <h4 className="input-token-name">BNB</h4>
               </div>
             </div>
