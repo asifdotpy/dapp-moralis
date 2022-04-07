@@ -74,31 +74,20 @@ function Transfer() {
 
     setIsPending(true);
     const txStatus = await Moralis.transfer(options);
+    const result = await txStatus.wait();
 
-    txStatus
-      .on("transactionHash", (hash) => {
-        openNotification({
-          message: "🔊 New Transaction",
-          description: `${hash}`,
-        });
-        console.log("🔊 New Transaction", hash);
-      })
-      .on("receipt", (receipt) => {
-        openNotification({
-          message: "📃 New Receipt",
-          description: `${receipt.transactionHash}`,
-        });
-        console.log("🔊 New Receipt: ", receipt);
-        setIsPending(false);
-      })
-      .on("error", (error) => {
-        openNotification({
-          message: "📃 Error",
-          description: `${error.message}`,
-        });
-        console.error(error);
-        setIsPending(false);
+    if (result) {
+      console.log(result);
+      console.log(result.blockHash);
+      openNotification({
+        message: "🔊 New Transaction",
+        description: `${result.blockHash}`,
       });
+      setIsPending(false);
+    }
+
+
+
   }
 
   return (
