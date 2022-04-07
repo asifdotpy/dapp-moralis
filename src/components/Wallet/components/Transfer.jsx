@@ -85,9 +85,6 @@ function Transfer() {
       });
       setIsPending(false);
     }
-
-
-
   }
 
   return (
