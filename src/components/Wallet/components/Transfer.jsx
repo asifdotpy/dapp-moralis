@@ -3,7 +3,6 @@ import { Button, Input, notification } from "antd";
 import Text from "antd/lib/typography/Text";
 import { useEffect, useState } from "react";
 import { useMoralis } from "react-moralis";
-import AddressInput from "../../AddressInput";
 import AssetSelector from "./AssetSelector";
 
 const styles = {
@@ -125,12 +124,6 @@ function Transfer() {
         </div>
         <div style={styles.select}>
           <div style={styles.textWrapper}>
-            <Text strong>Address:</Text>
-          </div>
-          <AddressInput autoFocus onChange={setReceiver} />
-        </div>
-        <div style={styles.select}>
-          <div style={styles.textWrapper}>
             <Text strong>Amount:</Text>
           </div>
           <Input
@@ -145,7 +138,6 @@ function Transfer() {
           <div style={styles.textWrapper}>
             <Text strong>Asset:</Text>
           </div>
-          <AssetSelector setAsset={setAsset} style={{ width: "100%" }} />
         </div>
         <Button
           type="primary"

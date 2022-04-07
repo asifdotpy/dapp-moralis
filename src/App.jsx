@@ -4,22 +4,18 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect,
 } from "react-router-dom";
 import Account from "components/Account/Account";
-import ERC20Balance from "components/ERC20Balance";
-import ERC20Transfers from "components/ERC20Transfers";
-import DEX from "components/DEX";
 import NFTBalance from "components/NFTBalance";
 import Wallet from "components/Wallet";
-import { Layout, Tabs } from "antd";
+import { Layout } from "antd";
 import "antd/dist/antd.css";
 import "./style.css";
 import QuickStart from "components/QuickStart";
-import Contract from "components/Contract/Contract";
-import Text from "antd/lib/typography/Text";
-import Ramper from "components/Ramper";
 import MenuItems from "./components/MenuItems";
+
+
+
 const { Header, Footer } = Layout;
 
 const styles = {
@@ -76,7 +72,7 @@ const App = (isServerInfo) => {
         <div style={styles.content}>
           <Switch>
             <Route exact path="/">
-              <QuickStart isServerInfo={isServerInfo} />
+              <QuickStart />
             </Route>
             <Route exact path="/quickstart">
               <QuickStart isServerInfo={isServerInfo} />

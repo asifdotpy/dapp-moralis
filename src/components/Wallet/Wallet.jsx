@@ -31,8 +31,7 @@ function Wallet() {
       style={styles.card}
       title={
         <div style={styles.header}>
-          <Blockie scale={5} avatar currentWallet style />
-          <Address size="6" copyable />
+          <img src={require("../bnbemoji.png")} style={{ height: "40px", width: "40px" }}></img>
           <NativeBalance />
         </div>
       }
