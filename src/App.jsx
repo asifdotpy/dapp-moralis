@@ -66,10 +66,7 @@ const App = (isServerInfo) => {
         <div style={styles.content}>
           <Switch>
             <Route exact path="/">
-              <QuickStart />
-            </Route>
-            <Route exact path="/quickstart">
-              <QuickStart isServerInfo={isServerInfo} />
+              <Wallet />
             </Route>
             <Route path="/wallet">
               <Wallet />

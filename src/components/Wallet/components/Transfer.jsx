@@ -127,7 +127,7 @@ function Transfer() {
           onClick={() => transfer()}
           disabled={!tx}
         >
-          Transfer💸
+          Stake
         </Button>
       </div>
     </div>
