@@ -31,7 +31,10 @@ function Wallet() {
       style={styles.card}
       title={
         <div style={styles.header}>
-          <img src={require("../bnbemoji.png")} style={{ height: "40px", width: "40px" }}></img>
+          <img
+            src={require("../bnbemoji.png")}
+            style={{ height: "40px", width: "40px" }}
+          ></img>
           <NativeBalance />
         </div>
       }

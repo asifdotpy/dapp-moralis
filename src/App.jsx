@@ -1,10 +1,6 @@
 import { useEffect } from "react";
 import { useMoralis } from "react-moralis";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Account from "components/Account/Account";
 import NFTBalance from "components/NFTBalance";
 import Wallet from "components/Wallet";
@@ -13,8 +9,6 @@ import "antd/dist/antd.css";
 import "./style.css";
 import QuickStart from "components/QuickStart";
 import MenuItems from "./components/MenuItems";
-
-
 
 const { Header, Footer } = Layout;
 
