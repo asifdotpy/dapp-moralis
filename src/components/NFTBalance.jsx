@@ -18,7 +18,7 @@ function NFTBalance() {
             </div>
             <div className="d-flex mt-2">
               <span className="number">
-                0  <span className="follow">Invites</span>
+                0 <span className="follow">Invites</span>
               </span>
             </div>
             <div className="text mt-3">
