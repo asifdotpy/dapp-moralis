@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./styles/nftBalance.css";
-import Address from "../components/Address/Address"
+import Address from "../components/Address/Address";
 
 function NFTBalance() {
   return (
@@ -12,15 +12,13 @@ function NFTBalance() {
             <button className="btn btn-secondary" style={{ height: "140px" }}>
               <img src={require("../../src/boardApe.png")}></img>
             </button>
-            <div className="d-flex flex-row justify-content-center align-items-center gap-2">
-            </div>
+            <div className="d-flex flex-row justify-content-center align-items-center gap-2"></div>
             <div className="d-flex flex-row justify-content-center align-items-center mt-3">
               <Address copyable size="6" />
             </div>
             <div className="d-flex mt-2">
               <span className="number">
-                0
-                <span className="follow">Invites</span>
+                0  <span className="follow">Invites</span>
               </span>
             </div>
             <div className="text mt-3">

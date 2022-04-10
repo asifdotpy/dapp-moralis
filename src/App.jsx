@@ -7,7 +7,6 @@ import Wallet from "components/Wallet";
 import { Layout } from "antd";
 import "antd/dist/antd.css";
 import "./style.css";
-import QuickStart from "components/QuickStart";
 import MenuItems from "./components/MenuItems";
 
 const { Header, Footer } = Layout;

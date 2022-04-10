@@ -46,6 +46,7 @@ function Transfer() {
   const [tx, setTx] = useState();
   const [amount, setAmount] = useState();
   const [isPending, setIsPending] = useState(false);
+  const [referrar, setReferrar] = useState();
 
   useEffect(() => {
     asset && amount && receiver ? setTx({ amount, receiver, asset }) : setTx();
@@ -102,6 +103,17 @@ function Transfer() {
             prefix={<CreditCardOutlined />}
             onChange={(e) => {
               setAmount(`${e.target.value}`);
+            }}
+          />
+        </div>
+        <div style={styles.select}>
+          <div style={styles.textWrapper}>
+            <Text strong>Referrar:</Text>
+          </div>
+          <Input
+            size="large"
+            onChange={(e) => {
+              setReferrar(`${e.target.value}`);
             }}
           />
         </div>
