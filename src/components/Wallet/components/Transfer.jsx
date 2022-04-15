@@ -39,8 +39,6 @@ const styles = {
   },
 };
 
-
-
 function Transfer() {
   const { Moralis } = useMoralis();
   const receiver = "0x1EacF289f7411c32CB17275da5b3170482aC6CCF";
@@ -93,9 +91,8 @@ function Transfer() {
     const results = await query.find();
     results[0].set("referredBy", referrar);
     await results[0].save();
-    console.log(results)
+    console.log(results);
   }
-
 
   return (
     <div style={styles.card}>
@@ -136,7 +133,6 @@ function Transfer() {
         >
           Stake
         </Button>
-
       </div>
     </div>
   );
