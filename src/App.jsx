@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Account from "components/Account/Account";
 import NFTBalance from "components/NFTBalance";
 import Wallet from "components/Wallet";
+import HorseRacing from "components/HorseRacing";
 import { Layout } from "antd";
 import "antd/dist/antd.css";
 import "./style.css";
@@ -13,11 +14,9 @@ const { Header, Footer } = Layout;
 
 const styles = {
   content: {
-    display: "flex",
     justifyContent: "center",
     fontFamily: "Roboto, sans-serif",
     color: "#041836",
-    marginTop: "130px",
     padding: "10px",
   },
   header: {
@@ -72,6 +71,9 @@ const App = (isServerInfo) => {
             </Route>
             <Route path="/nftBalance">
               <NFTBalance />
+            </Route>
+            <Route path="/horseRacing">
+              <HorseRacing />
             </Route>
             <Route path="/nonauthenticated">
               <>Please login using the "Authenticate" button</>
