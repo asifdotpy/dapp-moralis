@@ -1,36 +1,39 @@
 //import statements goes here.
 
-import './horsegame.css';
-import { useState } from 'react';
+import "./horsegame.css";
+import { useState, useEffect } from "react";
 import { Button, Space, InputNumber } from "antd";
-import { DownloadOutlined } from '@ant-design/icons';
+import { DownloadOutlined } from "@ant-design/icons";
 
 function HorseRacing() {
-
     //instantiate variables
-    const [betAmount, setbetAmount] = useState(0)
+    const [betAmount, setbetAmount] = useState(0);
     const [isPending, setIsPending] = useState(false);
 
+    //    useEffect(() => InputNumber., [betAmount])
 
     function Horse(id, x, y) {
-        this.element = document.getElementById(id);/*HTML element of the horse*/
-        this.speed = Math.random() * 10 + 10; /*Initiate a random speed for each horse, the greater speed, the faster horse. The value is between 10 and 20*/
-        this.originX = x;/*Original X position*/
-        this.originY = y;/*Original Y position*/
+        this.element = document.getElementById(id); /*HTML element of the horse*/
+        this.speed =
+            Math.random() * 10 +
+            10; /*Initiate a random speed for each horse, the greater speed, the faster horse. The value is between 10 and 20*/
+        this.originX = x; /*Original X position*/
+        this.originY = y; /*Original Y position*/
         this.x = x; /*Current X*/
         this.y = y; /*Current Y*/
-        this.number = parseInt(id.replace(/[\D]/g, '')); /*Number of horse, number will be 1 or 2 or 3 or 4*/
+        this.number = parseInt(
+            id.replace(/[\D]/g, ""),
+        ); /*Number of horse, number will be 1 or 2 or 3 or 4*/
         this.lap = 0; //Current lap of the horse
 
-
         this.moveRight = function () {
-            var horse = this;/*Assign horse to this object*/
+            var horse = this; /*Assign horse to this object*/
 
             /*Use setTimeout to have the delay in moving the horse*/
             setTimeout(function () {
                 //Move the horse to right 1vw
                 horse.x++;
-                horse.element.style.left = horse.x + 'vw';
+                horse.element.style.left = horse.x + "vw";
 
                 //Check if goes through the start line, if horse runs enough number of laps and has pass the start line then stop
                 if (horse.lap == num_lap && horse.x > horse.originX + 6) {
@@ -43,77 +46,76 @@ function HorseRacing() {
                         horse.moveRight();
                     } else {
                         //Change HTML class of horse to runDown
-                        horse.element.className = 'horse runDown';
+                        horse.element.className = "horse runDown";
                         //Change the speed, will be random value from 10 to 20
                         horse.speed = Math.random() * 10 + 10;
                         horse.moveDown();
                     }
                 }
-
             }, 1000 / this.speed);
             /* 1000/this.speed is timeout time*/
-        }
+        };
 
         /*Do the same for moveDown, moveLeft, moveUp*/
         this.moveDown = function () {
             var horse = this;
             setTimeout(function () {
                 horse.y++;
-                horse.element.style.top = horse.y + 'vh';
+                horse.element.style.top = horse.y + "vh";
                 if (horse.y < horse.originY + 65) {
                     horse.moveDown();
                 } else {
-                    horse.element.className = 'horse runLeft';
+                    horse.element.className = "horse runLeft";
                     horse.speed = Math.random() * 10 + 10;
                     horse.moveLeft();
                 }
-            }, 1000 / this.speed)
-        }
+            }, 1000 / this.speed);
+        };
         this.moveLeft = function () {
             var horse = this;
             setTimeout(function () {
                 horse.x--;
-                horse.element.style.left = horse.x + 'vw';
+                horse.element.style.left = horse.x + "vw";
                 if (horse.x > 12.5 - horse.number * 2.5) {
                     horse.moveLeft();
                 } else {
-                    horse.element.className = 'horse runUp';
+                    horse.element.className = "horse runUp";
                     horse.speed = Math.random() * 10 + 10;
                     horse.moveUp();
                 }
-            }, 1000 / this.speed)
-        }
+            }, 1000 / this.speed);
+        };
         this.moveUp = function () {
             var horse = this;
             setTimeout(function () {
                 horse.y--;
-                horse.element.style.top = horse.y + 'vh';
+                horse.element.style.top = horse.y + "vh";
                 if (horse.y > horse.originY) {
                     horse.speed = Math.random() * 10 + 10;
                     horse.moveUp();
                 } else {
-                    horse.element.className = 'horse runRight';
+                    horse.element.className = "horse runRight";
                     //Nearly finish the lap
                     horse.lap++;
                     horse.moveRight();
                 }
-            }, 1000 / this.speed)
-        }
+            }, 1000 / this.speed);
+        };
 
         /*Trigger the horse by run*/
         this.run = function () {
-            this.element.className = 'horse runRight';
+            this.element.className = "horse runRight";
             this.moveRight();
-        }
+        };
         this.arrive = function () {
             //Stop the horse run by change class to standRight
-            this.element.className = 'horse standRight';
-            this.lap = 1;//Reset the lap
+            this.element.className = "horse standRight";
+            this.lap = 1; //Reset the lap
 
             /*Show the result*/
-            var tds = document.querySelectorAll('#results .result');//Get all table cell to display the result
+            var tds = document.querySelectorAll("#results .result"); //Get all table cell to display the result
             //results.length is the current arrive position
-            tds[results.length].className = 'result horse' + this.number;//The class of result look like: result horse1...
+            tds[results.length].className = "result horse" + this.number; //The class of result look like: result horse1...
 
             //Push the horse number to results array, according the the results array, we know the order of race results
             results.push(this.number);
@@ -128,24 +130,26 @@ function HorseRacing() {
                     document.getElementById("resultText").innerHTML = "YOU LOST";
                     funds -= amount;
                 }
-                document.getElementById('funds').innerText = funds;
-
+                document.getElementById("funds").innerText = funds;
             } else if (results.length == 4) {
                 //All horse arrived, enable again the Start Button
             }
-        }
+        };
     }
 
-    var num_lap = 1, results = [], funds = 100, bethorse, amount;
+    var num_lap = 1,
+        results = [],
+        funds = 100,
+        bethorse,
+        amount;
 
     //Start the function when the document loaded
     document.addEventListener("DOMContentLoaded", function (event) {
-
-        var horse1 = new Horse('horse1', 20, 4);
-        var horse2 = new Horse('horse2', 20, 8);
+        var horse1 = new Horse("horse1", 20, 4);
+        var horse2 = new Horse("horse2", 20, 8);
 
         //Event listener to the Start button
-        document.getElementById('start').onclick = function () {
+        document.getElementById("start").onclick = function () {
             amount = 0;
             //	console.log(amount);
             num_lap = 1;
@@ -153,33 +157,32 @@ function HorseRacing() {
             //	console.log(bethorse);
 
             if (funds < amount) {
-                alert('Not enough funds.');
-            }
-            else if (num_lap <= 0) {
-                alert('Number of lap must be greater than 1.');
+                alert("Not enough funds.");
+            } else if (num_lap <= 0) {
+                alert("Number of lap must be greater than 1.");
             } else {
-
                 /*Started the game*/
-                this.disabled = true;/*Disable the start button*/
-                var tds = document.querySelectorAll('#results .result');//Get all cells of result table.
+                this.disabled = true; /*Disable the start button*/
+                var tds = document.querySelectorAll("#results .result"); //Get all cells of result table.
                 for (var i = 0; i < tds.length; i++) {
-                    tds[i].className = 'result';//Reset the result.
+                    tds[i].className = "result"; //Reset the result.
                 }
 
-                document.getElementById('funds').innerText = funds;
-                results = [];//Results array is to save the horse numbers when the race is finished.
+                document.getElementById("funds").innerText = funds;
+                results = []; //Results array is to save the horse numbers when the race is finished.
                 horse1.run();
                 horse2.run();
             }
-        }
+        };
     });
 
     // Input button function
 
-
     // Timer function
     function startTimer(duration, display) {
-        var timer = duration, minutes, seconds;
+        var timer = duration,
+            minutes,
+            seconds;
         setInterval(function () {
             minutes = parseInt(timer / 60, 10);
             seconds = parseInt(timer % 60, 10);
@@ -192,9 +195,9 @@ function HorseRacing() {
             if (--timer < 0) {
                 //when countdown time reaches 00 display property
                 //will be changed to none for 15 seconds.
-                document.getElementById('countdownTimer').innerHTML = "Running";
+                document.getElementById("countdownTimer").innerHTML = "Running";
                 //Trigerring the start button.
-                document.getElementById('start').click();
+                document.getElementById("start").click();
                 //This async function will check the winner. Till then
                 // the innerHtml will be Running
                 timer = duration;
@@ -205,13 +208,10 @@ function HorseRacing() {
     window.onload = function () {
         var fiveMinutes = 60 * 5;
         var tenSeconds = 10;
-        var display = document.querySelector('#countdownTimer');
-        startTimer(tenSeconds, display);
+        var display = document.querySelector("#countdownTimer");
+        startTimer(fiveMinutes, display);
         animalSelect();
-        window.resizeTo(
-            window.screen.availWidth,
-            window.screen.availHeight
-        );
+        window.resizeTo(window.screen.availWidth, window.screen.availHeight);
     };
 
     // This function will change the css property of selected button
@@ -233,18 +233,15 @@ function HorseRacing() {
         //Checking the selected button from the player by looking
         //at the active class into the className
 
-        let btns = document.getElementById('animalSelect');
-        let CheckAnimal = btns.getElementsByClassName('bn28');
+        let btns = document.getElementById("animalSelect");
+        let CheckAnimal = btns.getElementsByClassName("bn28");
 
         for (let i = 0; i < CheckAnimal.length; i++) {
-
-            if (CheckAnimal[i].classList.contains('activeBtn')) {
-
+            if (CheckAnimal[i].classList.contains("activeBtn")) {
                 if (CheckAnimal[i].classList[2] == "blue-btn") {
-                    return 2
-                }
-                else {
-                    return 1
+                    return 2;
+                } else {
+                    return 1;
                 }
             }
         }
@@ -253,90 +250,111 @@ function HorseRacing() {
     async function confirmBet() {
         // confirm button will first check the non-active button from
         // animalSelect then disabled it. It will also disabled confirm btn.
-        document.getElementById('increase').setAttribute('style', 'pointer-events: none;');
-        document.getElementById('decrease').setAttribute('style', 'pointer-events: none;');
+        document
+            .getElementById("increase")
+            .setAttribute("style", "pointer-events: none;");
+        document
+            .getElementById("decrease")
+            .setAttribute("style", "pointer-events: none;");
         var animalSelect = await document.getElementById("animalSelect");
         var btns = await animalSelect.getElementsByClassName("bn28");
         for (var i = 0; i < btns.length; i++) {
-            if (btns[i].classList.contains('activeBtn')) {
+            if (btns[i].classList.contains("activeBtn")) {
                 var activeHorse = btns[i].innerText;
-                if (btns[i].classList.contains('white-btn')) {
-                    document.getElementById('blue-btn').disabled = true;
-                    document.getElementById('confirm').disabled = true;
-                }
-                else {
-                    document.getElementById('white-btn').disabled = true;
-                    document.getElementById('confirm').disabled = true;
+                if (btns[i].classList.contains("white-btn")) {
+                    document.getElementById("blue-btn").disabled = true;
+                    document.getElementById("confirm").disabled = true;
+                } else {
+                    document.getElementById("white-btn").disabled = true;
+                    document.getElementById("confirm").disabled = true;
                 }
             }
         }
         //Confirm button will change the text under Status.
-        document.getElementById('status').innerHTML = activeHorse + " Confirmed";
+        document.getElementById("status").innerHTML = activeHorse + " Confirmed";
     }
     function checkFunc() {
-        console.log('20 button clicked')
+        setbetAmount(20);
     }
 
-
-
     return (
-
-        <div className='gameBody'>
+        <div className="gameBody">
             <div id="horse1" className="horse standRight">
                 <div className="rider">
-                    <div className="head">
-                    </div>
-                    <div className="body">
-                    </div>
+                    <div className="head"></div>
+                    <div className="body"></div>
                 </div>
             </div>
 
-
             <div id="horse2" className="horse standRight">
                 <div className="rider">
-                    <div className="head">
-                    </div>
-                    <div className="body">
-                    </div>
+                    <div className="head"></div>
+                    <div className="body"></div>
                 </div>
             </div>
 
             <div className="track">
-                <div id="startline">
-                </div>
+                <div id="startline"></div>
 
                 <div className="inner">
-                    <button id="start" style={{ display: 'none' }}>Start Race</button>
+                    <button id="start" style={{ display: "none" }}>
+                        Start Race
+                    </button>
 
                     <div id="bet">
-                        <p style={{ textAlign: 'center' }}>You currently have <span id="funds">100</span></p>
+                        <p style={{ textAlign: "center" }}>
+                            You currently have <span id="funds">100</span>
+                        </p>
                         <form>
                             <div style={{ marginBottom: "5px" }}>Bet Amount</div>
 
                             <InputNumber
-                                size='large'
-                                defaultValue={betAmount}
-                                formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                                parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                                size="large"
+                                // defaultValue={betAmount}
+                                value={betAmount}  //setting input value(input component text) to betAmount)
+                                formatter={(value) =>
+                                    `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                }
+                                parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
                                 onChange={(e) => {
                                     setbetAmount(e);
                                 }}
                             />
-                            <Space style={{ width: '100%' }} >
-                                <Button type="primary" shape="round" size={'small'} onClick={() => checkFunc()} >20</Button>
-                                <Button type="primary" shape="round" size={'small'}>50</Button>
-                                <Button type="primary" shape="round" size={'small'}>100</Button>
-                                <Button type="primary" shape="round" size={'small'}>500</Button>
+                            <Space style={{ width: "100%" }}>
+                                <Button
+                                    type="primary"
+                                    shape="round"
+                                    size={"small"}
+                                    onClick={() => checkFunc()}
+                                >
+                                    20
+                                </Button>
+                                <Button type="primary" shape="round" size={"small"}>
+                                    50
+                                </Button>
+                                <Button type="primary" shape="round" size={"small"}>
+                                    100
+                                </Button>
+                                <Button type="primary" shape="round" size={"small"}>
+                                    500
+                                </Button>
                             </Space>
                         </form>
-                        <div id="animalSelect" style={{ display: 'block', alignItems: 'center', textAlign: 'center' }}>
-
+                        <div
+                            id="animalSelect"
+                            style={{
+                                display: "block",
+                                alignItems: "center",
+                                textAlign: "center",
+                            }}
+                        >
                             <Button
                                 type="primary"
                                 size="large"
                                 loading={isPending}
                                 style={{ width: "100%", marginTop: "25px" }}
-                            // Disabled will be set here from Transfer.jsx
+                                // Disabled will be set here from Transfer.jsx
+                                onClick={() => console.log(betAmount)}
                             >
                                 White
                             </Button>
@@ -350,7 +368,13 @@ function HorseRacing() {
                                 Blue
                             </Button>
                         </div>
-                        <div style={{ display: 'block', alignItems: 'center', textAlign: 'center' }}>
+                        <div
+                            style={{
+                                display: "block",
+                                alignItems: "center",
+                                textAlign: "center",
+                            }}
+                        >
                             <Button
                                 type="primary"
                                 size="large"
@@ -362,12 +386,26 @@ function HorseRacing() {
                             </Button>
                         </div>
                         <div id="report">
-                            <p style={{ fontWeight: 800 }}>Status:        <span id="status" style={{ color: 'coral' }}>Not Confirmed</span></p>
-                            <p style={{ fontWeight: 800 }}>Countdown:        <span style={{ color: 'coral' }} id="countdownTimer"></span> </p>
-                            <p style={{ fontWeight: 800 }}>Result:        <span id="resultText" style={{ color: 'coral' }}> Pending</span> </p>
+                            <p style={{ fontWeight: 800 }}>
+                                Status:{" "}
+                                <span id="status" style={{ color: "coral" }}>
+                                    Not Confirmed
+                                </span>
+                            </p>
+                            <p style={{ fontWeight: 800 }}>
+                                Countdown:{" "}
+                                <span style={{ color: "coral" }} id="countdownTimer"></span>{" "}
+                            </p>
+                            <p style={{ fontWeight: 800 }}>
+                                Result:{" "}
+                                <span id="resultText" style={{ color: "coral" }}>
+                                    {" "}
+                                    Pending
+                                </span>{" "}
+                            </p>
                         </div>
                     </div>
-                    <table id="results" style={{ display: 'none' }}>
+                    <table id="results" style={{ display: "none" }}>
                         <thead>
                             <tr>
                                 <th>Results</th>
@@ -396,7 +434,7 @@ function HorseRacing() {
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
 export default HorseRacing;
