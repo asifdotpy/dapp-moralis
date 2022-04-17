@@ -273,9 +273,6 @@ function HorseRacing() {
         //Confirm button will change the text under Status.
         document.getElementById("status").innerHTML = activeHorse + " Confirmed";
     }
-    function checkFunc() {
-        setbetAmount(20);
-    }
 
     return (
         <div className="gameBody">
@@ -311,7 +308,7 @@ function HorseRacing() {
                             <InputNumber
                                 size="large"
                                 // defaultValue={betAmount}
-                                value={betAmount}  //setting input value(input component text) to betAmount)
+                                value={betAmount} //setting input value(input component text) to betAmount)
                                 formatter={(value) =>
                                     `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                 }
@@ -325,17 +322,17 @@ function HorseRacing() {
                                     type="primary"
                                     shape="round"
                                     size={"small"}
-                                    onClick={() => checkFunc()}
+                                    onClick={() => setbetAmount(20)}
                                 >
                                     20
                                 </Button>
-                                <Button type="primary" shape="round" size={"small"}>
+                                <Button type="primary" shape="round" size={"small"} onClick={() => setbetAmount(50)}>
                                     50
                                 </Button>
-                                <Button type="primary" shape="round" size={"small"}>
+                                <Button type="primary" shape="round" size={"small"} onClick={() => setbetAmount(100)}>
                                     100
                                 </Button>
-                                <Button type="primary" shape="round" size={"small"}>
+                                <Button type="primary" shape="round" size={"small"} onClick={() => setbetAmount(500)}>
                                     500
                                 </Button>
                             </Space>
