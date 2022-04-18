@@ -9,8 +9,11 @@ function HorseRacing() {
     //instantiate variables
     const [betAmount, setbetAmount] = useState(0);
     const [isPending, setIsPending] = useState(false);
+    const [selectedAnimal, setSelectedAnimal] = useState({ white: false, blue: false });
 
-    //    useEffect(() => InputNumber., [betAmount])
+    useEffect(() => setSelectedAnimal(selectedAnimal), [selectedAnimal])
+
+
 
     function Horse(id, x, y) {
         this.element = document.getElementById(id); /*HTML element of the horse*/
@@ -153,7 +156,7 @@ function HorseRacing() {
             amount = 0;
             //	console.log(amount);
             num_lap = 1;
-            bethorse = selectedAnimal();
+            //  bethorse = selectedAnimal();
             //	console.log(bethorse);
 
             if (funds < amount) {
@@ -229,23 +232,6 @@ function HorseRacing() {
         }
     }
 
-    function selectedAnimal() {
-        //Checking the selected button from the player by looking
-        //at the active class into the className
-
-        let btns = document.getElementById("animalSelect");
-        let CheckAnimal = btns.getElementsByClassName("bn28");
-
-        for (let i = 0; i < CheckAnimal.length; i++) {
-            if (CheckAnimal[i].classList.contains("activeBtn")) {
-                if (CheckAnimal[i].classList[2] == "blue-btn") {
-                    return 2;
-                } else {
-                    return 1;
-                }
-            }
-        }
-    }
 
     async function confirmBet() {
         // confirm button will first check the non-active button from
@@ -348,19 +334,20 @@ function HorseRacing() {
                             <Button
                                 type="primary"
                                 size="large"
-                                loading={isPending}
                                 style={{ width: "100%", marginTop: "25px" }}
                                 // Disabled will be set here from Transfer.jsx
-                                onClick={() => console.log(betAmount)}
+                                ghost={!selectedAnimal.white}
+                                onClick={() => setSelectedAnimal({ white: true, blue: false })}
                             >
                                 White
                             </Button>
                             <Button
                                 type="primary"
                                 size="large"
-                                loading={isPending}
                                 style={{ width: "100%", marginTop: "25px" }}
-                            // Disabled will be set here from Transfer.jsx
+                                // Disabled will be set here from Transfer.jsx
+                                ghost={!selectedAnimal.blue}
+                                onClick={() => setSelectedAnimal({ white: false, blue: true })}
                             >
                                 Blue
                             </Button>
