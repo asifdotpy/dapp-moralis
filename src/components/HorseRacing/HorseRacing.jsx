@@ -3,15 +3,18 @@
 import "./horsegame.css";
 import { useState, useEffect } from "react";
 import { Button, Space, InputNumber } from "antd";
-import { DownloadOutlined } from "@ant-design/icons";
+import { useMoralis } from "react-moralis";
+
 
 function HorseRacing() {
     //instantiate variables
+    const { Moralis } = useMoralis();
     const [betAmount, setbetAmount] = useState(0);
     const [isPending, setIsPending] = useState(false);
     const [selectedAnimal, setSelectedAnimal] = useState({ white: false, blue: false });
+    const [balance, setBalance] = useState(0);
 
-    useEffect(() => setSelectedAnimal(selectedAnimal), [selectedAnimal])
+    useEffect(() => setBalance(balance) && setSelectedAnimal(selectedAnimal), [selectedAnimal])
 
 
 
@@ -212,7 +215,7 @@ function HorseRacing() {
         var fiveMinutes = 60 * 5;
         var tenSeconds = 10;
         var display = document.querySelector("#countdownTimer");
-        startTimer(fiveMinutes, display);
+        startTimer(tenSeconds, display);
         animalSelect();
         window.resizeTo(window.screen.availWidth, window.screen.availHeight);
     };
@@ -260,6 +263,16 @@ function HorseRacing() {
         document.getElementById("status").innerHTML = activeHorse + " Confirmed";
     }
 
+    // balanceUpdate will update it's value in every render. setBalance function is added into useEffect.
+    async function balanceUpdate() {
+        const query = new Moralis.Query("_User");
+        const userData = await query.find();
+        setBalance(userData[0].get('balance'))
+        return userData;
+    }
+
+    balanceUpdate();
+
     return (
         <div className="gameBody">
             <div id="horse1" className="horse standRight">
@@ -286,7 +299,7 @@ function HorseRacing() {
 
                     <div id="bet">
                         <p style={{ textAlign: "center" }}>
-                            You currently have <span id="funds">100</span>
+                            You currently have <span id="funds">{balance}</span>
                         </p>
                         <form>
                             <div style={{ marginBottom: "5px" }}>Bet Amount</div>
@@ -362,9 +375,9 @@ function HorseRacing() {
                             <Button
                                 type="primary"
                                 size="large"
-                                loading={isPending}
                                 style={{ width: "100%", marginTop: "25px" }}
-                            // Disabled will be set here from Transfer.jsx
+                                // Disabled will be set here from Transfer.jsx
+                                onClick={() => balanceUpdate()}
                             >
                                 Confirm
                             </Button>
