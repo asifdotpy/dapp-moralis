@@ -10,11 +10,10 @@ function HorseRacing() {
     //instantiate variables
     const { Moralis } = useMoralis();
     const [betAmount, setbetAmount] = useState(0);
-    const [isPending, setIsPending] = useState(false);
     const [selectedAnimal, setSelectedAnimal] = useState({ white: false, blue: false });
     const [balance, setBalance] = useState(0);
 
-    useEffect(() => setBalance(balance) && setSelectedAnimal(selectedAnimal), [selectedAnimal])
+    useEffect(() => setBalance(balance) && setSelectedAnimal(selectedAnimal), [selectedAnimal, balance])
 
 
 
