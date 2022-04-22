@@ -4,19 +4,19 @@ import "./horsegame.css";
 import { useState, useEffect } from "react";
 import { Button, Space, InputNumber } from "antd";
 import { useMoralis } from "react-moralis";
-import Countdown from 'react-countdown';
-
+import Countdown from "react-countdown";
 
 function HorseRacing() {
     //instantiate variables
     const { Moralis } = useMoralis();
     const [betAmount, setbetAmount] = useState(0);
-    const [selectedAnimal, setSelectedAnimal] = useState({ white: false, blue: false });
+    const [selectedAnimal, setSelectedAnimal] = useState({
+        white: false,
+        blue: false,
+    });
     const [balance, setBalance] = useState(0);
 
     //useEffect(() => setBalance(balance) && setSelectedAnimal(selectedAnimal), [selectedAnimal, balance])
-
-
 
     function Horse(id, x, y) {
         this.element = document.getElementById(id); /*HTML element of the horse*/
@@ -145,7 +145,7 @@ function HorseRacing() {
 
     var num_lap = 1,
         results = [],
-        funds = 100,
+        funds = balance,
         bethorse,
         amount;
 
@@ -183,34 +183,36 @@ function HorseRacing() {
     });
 
     // Input button function
-    {/*
-    // Timer function
-    function startTimer(duration, display) {
-        var timer = duration,
-            minutes,
-            seconds;
-        setInterval(function () {
-            minutes = parseInt(timer / 60, 10);
-            seconds = parseInt(timer % 60, 10);
+    {
+        /*
+        // Timer function
+        function startTimer(duration, display) {
+            var timer = duration,
+                minutes,
+                seconds;
+            setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
 
-            minutes = minutes < 10 ? "0" + minutes : minutes;
-            seconds = seconds < 10 ? "0" + seconds : seconds;
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
 
-            display.textContent = minutes + ":" + seconds;
+                display.textContent = minutes + ":" + seconds;
 
-            if (--timer < 0) {
-                //when countdown time reaches 00 display property
-                //will be changed to none for 15 seconds.
-                document.getElementById("countdownTimer").innerHTML = "Running";
-                //Trigerring the start button.
-                document.getElementById("start").click();
-                //This async function will check the winner. Till then
-                // the innerHtml will be Running
-                timer = duration;
-            }
-        }, 1000);
+                if (--timer < 0) {
+                    //when countdown time reaches 00 display property
+                    //will be changed to none for 15 seconds.
+                    document.getElementById("countdownTimer").innerHTML = "Running";
+                    //Trigerring the start button.
+                    document.getElementById("start").click();
+                    //This async function will check the winner. Till then
+                    // the innerHtml will be Running
+                    timer = duration;
+                }
+            }, 1000);
+        }
+    */
     }
-*/}
     window.onload = function () {
         var fiveMinutes = 60 * 5;
         var tenSeconds = 10;
@@ -232,7 +234,6 @@ function HorseRacing() {
             });
         }
     }
-
 
     async function confirmBet() {
         // confirm button will first check the non-active button from
@@ -265,7 +266,7 @@ function HorseRacing() {
     async function balanceUpdate() {
         const query = new Moralis.Query("_User");
         const userData = await query.find();
-        setBalance(userData[0].get('balance'))
+        setBalance(userData[0].get("balance"));
         return userData;
     }
 
@@ -279,7 +280,11 @@ function HorseRacing() {
             return <Completionist />;
         } else {
             // Render a countdown
-            return <span>{minutes}:{seconds}</span>;
+            return (
+                <span>
+                    {minutes}:{seconds}
+                </span>
+            );
         }
     };
 
@@ -335,13 +340,28 @@ function HorseRacing() {
                                 >
                                     20
                                 </Button>
-                                <Button type="primary" shape="round" size={"small"} onClick={() => setbetAmount(50)}>
+                                <Button
+                                    type="primary"
+                                    shape="round"
+                                    size={"small"}
+                                    onClick={() => setbetAmount(50)}
+                                >
                                     50
                                 </Button>
-                                <Button type="primary" shape="round" size={"small"} onClick={() => setbetAmount(100)}>
+                                <Button
+                                    type="primary"
+                                    shape="round"
+                                    size={"small"}
+                                    onClick={() => setbetAmount(100)}
+                                >
                                     100
                                 </Button>
-                                <Button type="primary" shape="round" size={"small"} onClick={() => setbetAmount(500)}>
+                                <Button
+                                    type="primary"
+                                    shape="round"
+                                    size={"small"}
+                                    onClick={() => setbetAmount(500)}
+                                >
                                     500
                                 </Button>
                             </Space>
@@ -402,9 +422,12 @@ function HorseRacing() {
                             </p>
                             <p style={{ fontWeight: 800 }}>
                                 Countdown:{" "}
-                                <Countdown date={Date.now() + 10000}
+                                <Countdown
+                                    date={Date.now() + 10000}
                                     renderer={renderer}
-                                    zeroPadTime={3} />
+                                    zeroPadTime={3}
+                                    onComplete={() => document.getElementById("start").click()}
+                                />
                             </p>
                             <p style={{ fontWeight: 800 }}>
                                 Result:{" "}
