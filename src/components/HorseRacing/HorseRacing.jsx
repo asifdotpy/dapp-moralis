@@ -4,6 +4,7 @@ import "./horsegame.css";
 import { useState, useEffect } from "react";
 import { Button, Space, InputNumber } from "antd";
 import { useMoralis } from "react-moralis";
+import Countdown from 'react-countdown';
 
 
 function HorseRacing() {
@@ -13,7 +14,7 @@ function HorseRacing() {
     const [selectedAnimal, setSelectedAnimal] = useState({ white: false, blue: false });
     const [balance, setBalance] = useState(0);
 
-    useEffect(() => setBalance(balance) && setSelectedAnimal(selectedAnimal), [selectedAnimal, balance])
+    //useEffect(() => setBalance(balance) && setSelectedAnimal(selectedAnimal), [selectedAnimal, balance])
 
 
 
@@ -182,7 +183,7 @@ function HorseRacing() {
     });
 
     // Input button function
-
+    {/*
     // Timer function
     function startTimer(duration, display) {
         var timer = duration,
@@ -209,13 +210,11 @@ function HorseRacing() {
             }
         }, 1000);
     }
-
+*/}
     window.onload = function () {
         var fiveMinutes = 60 * 5;
         var tenSeconds = 10;
         var display = document.querySelector("#countdownTimer");
-        startTimer(tenSeconds, display);
-        animalSelect();
         window.resizeTo(window.screen.availWidth, window.screen.availHeight);
     };
 
@@ -271,6 +270,18 @@ function HorseRacing() {
     }
 
     balanceUpdate();
+
+    const Completionist = () => <span>Running</span>;
+
+    const renderer = ({ hours, minutes, seconds, completed }) => {
+        if (completed) {
+            // Render a completed state
+            return <Completionist />;
+        } else {
+            // Render a countdown
+            return <span>{minutes}:{seconds}</span>;
+        }
+    };
 
     return (
         <div className="gameBody">
@@ -364,6 +375,7 @@ function HorseRacing() {
                                 Blue
                             </Button>
                         </div>
+
                         <div
                             style={{
                                 display: "block",
@@ -390,7 +402,9 @@ function HorseRacing() {
                             </p>
                             <p style={{ fontWeight: 800 }}>
                                 Countdown:{" "}
-                                <span style={{ color: "coral" }} id="countdownTimer"></span>{" "}
+                                <Countdown date={Date.now() + 10000}
+                                    renderer={renderer}
+                                    zeroPadTime={3} />
                             </p>
                             <p style={{ fontWeight: 800 }}>
                                 Result:{" "}
