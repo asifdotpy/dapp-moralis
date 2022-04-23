@@ -8,7 +8,13 @@ import Countdown from "react-countdown";
 
 function HorseRacing() {
     //instantiate variables
-    const { isWeb3Enabled, enableWeb3, isAuthenticated, isWeb3EnableLoading, Moralis } = useMoralis();
+    const {
+        isWeb3Enabled,
+        enableWeb3,
+        isAuthenticated,
+        isWeb3EnableLoading,
+        Moralis,
+    } = useMoralis();
 
     const [betAmount, setbetAmount] = useState(0);
     const [selectedAnimal, setSelectedAnimal] = useState({
@@ -23,8 +29,7 @@ function HorseRacing() {
         if (isAuthenticated && !isWeb3Enabled && !isWeb3EnableLoading) {
             enableWeb3({ provider: connectorId });
         }
-    }, [isAuthenticated, isWeb3Enabled, balance])
-
+    }, [isAuthenticated, isWeb3Enabled, balance]);
 
     function Horse(id, x, y) {
         this.element = document.getElementById(id); /*HTML element of the horse*/
@@ -186,33 +191,33 @@ function HorseRacing() {
     // Input button function
     {
         /*
-            // Timer function
-            function startTimer(duration, display) {
-                var timer = duration,
-                    minutes,
-                    seconds;
-                setInterval(function () {
-                    minutes = parseInt(timer / 60, 10);
-                    seconds = parseInt(timer % 60, 10);
+                // Timer function
+                function startTimer(duration, display) {
+                    var timer = duration,
+                        minutes,
+                        seconds;
+                    setInterval(function () {
+                        minutes = parseInt(timer / 60, 10);
+                        seconds = parseInt(timer % 60, 10);
 
-                    minutes = minutes < 10 ? "0" + minutes : minutes;
-                    seconds = seconds < 10 ? "0" + seconds : seconds;
+                        minutes = minutes < 10 ? "0" + minutes : minutes;
+                        seconds = seconds < 10 ? "0" + seconds : seconds;
 
-                    display.textContent = minutes + ":" + seconds;
+                        display.textContent = minutes + ":" + seconds;
 
-                    if (--timer < 0) {
-                        //when countdown time reaches 00 display property
-                        //will be changed to none for 15 seconds.
-                        document.getElementById("countdownTimer").innerHTML = "Running";
-                        //Trigerring the start button.
-                        document.getElementById("start").click();
-                        //This async function will check the winner. Till then
-                        // the innerHtml will be Running
-                        timer = duration;
-                    }
-                }, 1000);
-            }
-        */
+                        if (--timer < 0) {
+                            //when countdown time reaches 00 display property
+                            //will be changed to none for 15 seconds.
+                            document.getElementById("countdownTimer").innerHTML = "Running";
+                            //Trigerring the start button.
+                            document.getElementById("start").click();
+                            //This async function will check the winner. Till then
+                            // the innerHtml will be Running
+                            timer = duration;
+                        }
+                    }, 1000);
+                }
+            */
     }
     window.onload = function () {
         window.resizeTo(window.screen.availWidth, window.screen.availHeight);
@@ -233,31 +238,24 @@ function HorseRacing() {
         }
     }
 
-    async function confirmBet() {
-        // confirm button will first check the non-active button from
-        // animalSelect then disabled it. It will also disabled confirm btn.
-        document
-            .getElementById("increase")
-            .setAttribute("style", "pointer-events: none;");
-        document
-            .getElementById("decrease")
-            .setAttribute("style", "pointer-events: none;");
-        var animalSelect = await document.getElementById("animalSelect");
-        var btns = await animalSelect.getElementsByClassName("bn28");
-        for (var i = 0; i < btns.length; i++) {
-            if (btns[i].classList.contains("activeBtn")) {
-                var activeHorse = btns[i].innerText;
-                if (btns[i].classList.contains("white-btn")) {
-                    document.getElementById("blue-btn").disabled = true;
-                    document.getElementById("confirm").disabled = true;
-                } else {
-                    document.getElementById("white-btn").disabled = true;
-                    document.getElementById("confirm").disabled = true;
-                }
+    function confirmBet() {
+        if (!selectedAnimal.white && !selectedAnimal.blue) {
+            let betBtns = document.getElementsByClassName("bet-btn");
+            for (let i = 0; i < betBtns.length; i++) {
+                betBtns[i].setAttribute("style", "border-color: red");
             }
+            setSelectedAnimal(selectedAnimal);
+            setbetAmount(betAmount);
+            console.log(betAmount);
+            console.log(selectedAnimal);
         }
-        //Confirm button will change the text under Status.
-        document.getElementById("status").innerHTML = activeHorse + " Confirmed";
+        else {
+            setSelectedAnimal(selectedAnimal);
+            setbetAmount(betAmount);
+            console.log(betAmount);
+            console.log(selectedAnimal);
+
+        }
     }
 
     // balanceUpdate will update it's value in every render. setBalance function is added into useEffect.
@@ -268,8 +266,13 @@ function HorseRacing() {
         return userData;
     }
 
-
-    const Completionist = () => <span>Running</span>;
+    const Completionist = () => {
+        let btns = document.getElementsByClassName("buttons");
+        for (let i = 0; i < btns.length; i++) {
+            btns[i].setAttribute("disabled", true);
+        }
+        return <span>Running</span>
+    }
 
     const renderer = ({ hours, minutes, seconds, completed }) => {
         if (completed) {
@@ -311,8 +314,14 @@ function HorseRacing() {
 
                     <div id="bet">
                         <p style={{ textAlign: "center" }}>
-                            Balance:  <span id="funds">{balance}</span>
-                            <button id="sync-btn" style={{ margin: "0px 10px" }} onClick={() => balanceCheck()}>🔄</button>
+                            Balance: <span id="funds">{balance}</span>
+                            <button
+                                id="sync-btn"
+                                style={{ margin: "0px 10px" }}
+                                onClick={() => balanceCheck()}
+                            >
+                                🔄
+                            </button>
                         </p>
                         <form>
                             <div style={{ marginBottom: "5px" }}>Bet Amount</div>
@@ -331,6 +340,7 @@ function HorseRacing() {
                             />
                             <Space style={{ width: "100%" }}>
                                 <Button
+                                    className="buttons twenty"
                                     type="primary"
                                     shape="round"
                                     size={"small"}
@@ -340,6 +350,7 @@ function HorseRacing() {
                                 </Button>
                                 <Button
                                     type="primary"
+                                    className="buttons fifty"
                                     shape="round"
                                     size={"small"}
                                     onClick={() => setbetAmount(50)}
@@ -348,6 +359,7 @@ function HorseRacing() {
                                 </Button>
                                 <Button
                                     type="primary"
+                                    className="buttons hundred"
                                     shape="round"
                                     size={"small"}
                                     onClick={() => setbetAmount(100)}
@@ -356,6 +368,7 @@ function HorseRacing() {
                                 </Button>
                                 <Button
                                     type="primary"
+                                    className="buttons five-hundred"
                                     shape="round"
                                     size={"small"}
                                     onClick={() => setbetAmount(500)}
@@ -373,6 +386,8 @@ function HorseRacing() {
                             }}
                         >
                             <Button
+                                id="white-btn"
+                                className="buttons bet-btn"
                                 type="primary"
                                 size="large"
                                 style={{ width: "100%", marginTop: "25px" }}
@@ -383,7 +398,9 @@ function HorseRacing() {
                                 White
                             </Button>
                             <Button
+                                id="buttons blue-btn"
                                 type="primary"
+                                className="bet-btn buttons"
                                 size="large"
                                 style={{ width: "100%", marginTop: "25px" }}
                                 // Disabled will be set here from Transfer.jsx
@@ -403,9 +420,11 @@ function HorseRacing() {
                         >
                             <Button
                                 type="primary"
+                                className="buttons confirm"
                                 size="large"
                                 style={{ width: "100%", marginTop: "25px" }}
-                            // Disabled will be set here from Transfer.jsx
+                                // Disabled will be set here from Transfer.jsx
+                                onClick={() => confirmBet()}
                             >
                                 Confirm
                             </Button>
