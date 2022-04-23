@@ -8,15 +8,23 @@ import Countdown from "react-countdown";
 
 function HorseRacing() {
     //instantiate variables
-    const { Moralis } = useMoralis();
+    const { isWeb3Enabled, enableWeb3, isAuthenticated, isWeb3EnableLoading, Moralis } = useMoralis();
+
     const [betAmount, setbetAmount] = useState(0);
     const [selectedAnimal, setSelectedAnimal] = useState({
         white: false,
         blue: false,
     });
     const [balance, setBalance] = useState(0);
+    const num_lap = 1;
 
-    //useEffect(() => setBalance(balance) && setSelectedAnimal(selectedAnimal), [selectedAnimal, balance])
+    useEffect(() => {
+        const connectorId = window.localStorage.getItem("connectorId");
+        if (isAuthenticated && !isWeb3Enabled && !isWeb3EnableLoading) {
+            enableWeb3({ provider: connectorId });
+        }
+    }, [isAuthenticated, isWeb3Enabled, balance])
+
 
     function Horse(id, x, y) {
         this.element = document.getElementById(id); /*HTML element of the horse*/
@@ -143,12 +151,6 @@ function HorseRacing() {
         };
     }
 
-    var num_lap = 1,
-        results = [],
-        funds = balance,
-        bethorse,
-        amount;
-
     //Start the function when the document loaded
     document.addEventListener("DOMContentLoaded", function (event) {
         var horse1 = new Horse("horse1", 20, 4);
@@ -158,7 +160,6 @@ function HorseRacing() {
         document.getElementById("start").onclick = function () {
             amount = 0;
             //	console.log(amount);
-            num_lap = 1;
             //  bethorse = selectedAnimal();
             //	console.log(bethorse);
 
@@ -185,38 +186,35 @@ function HorseRacing() {
     // Input button function
     {
         /*
-        // Timer function
-        function startTimer(duration, display) {
-            var timer = duration,
-                minutes,
-                seconds;
-            setInterval(function () {
-                minutes = parseInt(timer / 60, 10);
-                seconds = parseInt(timer % 60, 10);
+            // Timer function
+            function startTimer(duration, display) {
+                var timer = duration,
+                    minutes,
+                    seconds;
+                setInterval(function () {
+                    minutes = parseInt(timer / 60, 10);
+                    seconds = parseInt(timer % 60, 10);
 
-                minutes = minutes < 10 ? "0" + minutes : minutes;
-                seconds = seconds < 10 ? "0" + seconds : seconds;
+                    minutes = minutes < 10 ? "0" + minutes : minutes;
+                    seconds = seconds < 10 ? "0" + seconds : seconds;
 
-                display.textContent = minutes + ":" + seconds;
+                    display.textContent = minutes + ":" + seconds;
 
-                if (--timer < 0) {
-                    //when countdown time reaches 00 display property
-                    //will be changed to none for 15 seconds.
-                    document.getElementById("countdownTimer").innerHTML = "Running";
-                    //Trigerring the start button.
-                    document.getElementById("start").click();
-                    //This async function will check the winner. Till then
-                    // the innerHtml will be Running
-                    timer = duration;
-                }
-            }, 1000);
-        }
-    */
+                    if (--timer < 0) {
+                        //when countdown time reaches 00 display property
+                        //will be changed to none for 15 seconds.
+                        document.getElementById("countdownTimer").innerHTML = "Running";
+                        //Trigerring the start button.
+                        document.getElementById("start").click();
+                        //This async function will check the winner. Till then
+                        // the innerHtml will be Running
+                        timer = duration;
+                    }
+                }, 1000);
+            }
+        */
     }
     window.onload = function () {
-        var fiveMinutes = 60 * 5;
-        var tenSeconds = 10;
-        var display = document.querySelector("#countdownTimer");
         window.resizeTo(window.screen.availWidth, window.screen.availHeight);
     };
 
@@ -263,14 +261,13 @@ function HorseRacing() {
     }
 
     // balanceUpdate will update it's value in every render. setBalance function is added into useEffect.
-    async function balanceUpdate() {
+    async function balanceCheck() {
         const query = new Moralis.Query("_User");
         const userData = await query.find();
         setBalance(userData[0].get("balance"));
         return userData;
     }
 
-    balanceUpdate();
 
     const Completionist = () => <span>Running</span>;
 
@@ -314,7 +311,8 @@ function HorseRacing() {
 
                     <div id="bet">
                         <p style={{ textAlign: "center" }}>
-                            You currently have <span id="funds">{balance}</span>
+                            Balance:  <span id="funds">{balance}</span>
+                            <button id="sync-btn" style={{ margin: "0px 10px" }} onClick={() => balanceCheck()}>🔄</button>
                         </p>
                         <form>
                             <div style={{ marginBottom: "5px" }}>Bet Amount</div>
@@ -407,8 +405,7 @@ function HorseRacing() {
                                 type="primary"
                                 size="large"
                                 style={{ width: "100%", marginTop: "25px" }}
-                                // Disabled will be set here from Transfer.jsx
-                                onClick={() => balanceUpdate()}
+                            // Disabled will be set here from Transfer.jsx
                             >
                                 Confirm
                             </Button>
@@ -423,7 +420,7 @@ function HorseRacing() {
                             <p style={{ fontWeight: 800 }}>
                                 Countdown:{" "}
                                 <Countdown
-                                    date={Date.now() + 10000}
+                                    date={Date.now() + 20000}
                                     renderer={renderer}
                                     zeroPadTime={3}
                                     onComplete={() => document.getElementById("start").click()}
