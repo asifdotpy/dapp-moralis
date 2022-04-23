@@ -6,6 +6,8 @@ import { Button, Space, InputNumber } from "antd";
 import { useMoralis } from "react-moralis";
 import Countdown from "react-countdown";
 
+var timer = Date.now() + 10000;
+
 function HorseRacing() {
     //instantiate variables
     const {
@@ -21,9 +23,11 @@ function HorseRacing() {
         white: false,
         blue: false,
     });
+    //   const [timer, setTimer] = useState(0)
     const [balance, setBalance] = useState(0);
     const num_lap = 1;
-
+    //  setTimer(Date.now() + 10000);
+    // console.log(Date.now(), typeof Date.now())
     useEffect(() => {
         const connectorId = window.localStorage.getItem("connectorId");
         if (isAuthenticated && !isWeb3Enabled && !isWeb3EnableLoading) {
@@ -191,33 +195,33 @@ function HorseRacing() {
     // Input button function
     {
         /*
-                // Timer function
-                function startTimer(duration, display) {
-                    var timer = duration,
-                        minutes,
-                        seconds;
-                    setInterval(function () {
-                        minutes = parseInt(timer / 60, 10);
-                        seconds = parseInt(timer % 60, 10);
+                    // Timer function
+                    function startTimer(duration, display) {
+                        var timer = duration,
+                            minutes,
+                            seconds;
+                        setInterval(function () {
+                            minutes = parseInt(timer / 60, 10);
+                            seconds = parseInt(timer % 60, 10);
 
-                        minutes = minutes < 10 ? "0" + minutes : minutes;
-                        seconds = seconds < 10 ? "0" + seconds : seconds;
+                            minutes = minutes < 10 ? "0" + minutes : minutes;
+                            seconds = seconds < 10 ? "0" + seconds : seconds;
 
-                        display.textContent = minutes + ":" + seconds;
+                            display.textContent = minutes + ":" + seconds;
 
-                        if (--timer < 0) {
-                            //when countdown time reaches 00 display property
-                            //will be changed to none for 15 seconds.
-                            document.getElementById("countdownTimer").innerHTML = "Running";
-                            //Trigerring the start button.
-                            document.getElementById("start").click();
-                            //This async function will check the winner. Till then
-                            // the innerHtml will be Running
-                            timer = duration;
-                        }
-                    }, 1000);
-                }
-            */
+                            if (--timer < 0) {
+                                //when countdown time reaches 00 display property
+                                //will be changed to none for 15 seconds.
+                                document.getElementById("countdownTimer").innerHTML = "Running";
+                                //Trigerring the start button.
+                                document.getElementById("start").click();
+                                //This async function will check the winner. Till then
+                                // the innerHtml will be Running
+                                timer = duration;
+                            }
+                        }, 1000);
+                    }
+                */
     }
     window.onload = function () {
         window.resizeTo(window.screen.availWidth, window.screen.availHeight);
@@ -248,13 +252,11 @@ function HorseRacing() {
             setbetAmount(betAmount);
             console.log(betAmount);
             console.log(selectedAnimal);
-        }
-        else {
+        } else {
             setSelectedAnimal(selectedAnimal);
             setbetAmount(betAmount);
             console.log(betAmount);
             console.log(selectedAnimal);
-
         }
     }
 
@@ -271,8 +273,8 @@ function HorseRacing() {
         for (let i = 0; i < btns.length; i++) {
             btns[i].setAttribute("disabled", true);
         }
-        return <span>Running</span>
-    }
+        return <span>Running</span>;
+    };
 
     const renderer = ({ hours, minutes, seconds, completed }) => {
         if (completed) {
@@ -439,7 +441,7 @@ function HorseRacing() {
                             <p style={{ fontWeight: 800 }}>
                                 Countdown:{" "}
                                 <Countdown
-                                    date={Date.now() + 20000}
+                                    date={timer}
                                     renderer={renderer}
                                     zeroPadTime={3}
                                     onComplete={() => document.getElementById("start").click()}
