@@ -24,7 +24,7 @@ function MenuItems() {
       <Menu.Item key="/wallet">
         <NavLink to="/wallet">👛 Wallet</NavLink>
       </Menu.Item>
-      <Menu.Item>
+      <Menu.Item key="/horseRacing">
         <NavLink to="/horseRacing">🎮 Game</NavLink>
       </Menu.Item>
     </Menu>

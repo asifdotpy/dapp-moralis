@@ -6,7 +6,7 @@ import { Button, Space, InputNumber } from "antd";
 import { useMoralis } from "react-moralis";
 import Countdown from "react-countdown";
 
-var timer = Date.now() + 10000;
+var timer = Date.now() + 30000;
 
 function HorseRacing() {
     //instantiate variables
@@ -33,7 +33,7 @@ function HorseRacing() {
         if (isAuthenticated && !isWeb3Enabled && !isWeb3EnableLoading) {
             enableWeb3({ provider: connectorId });
         }
-    }, [isAuthenticated, isWeb3Enabled, balance]);
+    }, [isAuthenticated, isWeb3Enabled]);
 
     function Horse(id, x, y) {
         this.element = document.getElementById(id); /*HTML element of the horse*/
@@ -78,7 +78,6 @@ function HorseRacing() {
             }, 1000 / this.speed);
             /* 1000/this.speed is timeout time*/
         };
-
         /*Do the same for moveDown, moveLeft, moveUp*/
         this.moveDown = function () {
             var horse = this;
@@ -146,20 +145,19 @@ function HorseRacing() {
             //Win horse
             if (results.length == 1) {
                 //If win horse is the bet horse, then add the fund
-                if (this.number == bethorse) {
+                if (this.number == selectedAnimal.white ? 1 : 2) {
                     document.getElementById("resultText").innerHTML = "YOU WON";
-                    funds += amount;
+                    updateBalance('win');
                 } else {
                     document.getElementById("resultText").innerHTML = "YOU LOST";
-                    funds -= amount;
+                    updateBalance('lose');
                 }
-                document.getElementById("funds").innerText = funds;
             } else if (results.length == 4) {
                 //All horse arrived, enable again the Start Button
             }
         };
     }
-
+    var results = [];
     //Start the function when the document loaded
     document.addEventListener("DOMContentLoaded", function (event) {
         var horse1 = new Horse("horse1", 20, 4);
@@ -167,12 +165,11 @@ function HorseRacing() {
 
         //Event listener to the Start button
         document.getElementById("start").onclick = function () {
-            amount = 0;
             //	console.log(amount);
             //  bethorse = selectedAnimal();
             //	console.log(bethorse);
 
-            if (funds < amount) {
+            if (balance < betAmount) {
                 alert("Not enough funds.");
             } else if (num_lap <= 0) {
                 alert("Number of lap must be greater than 1.");
@@ -184,8 +181,6 @@ function HorseRacing() {
                     tds[i].className = "result"; //Reset the result.
                 }
 
-                document.getElementById("funds").innerText = funds;
-                results = []; //Results array is to save the horse numbers when the race is finished.
                 horse1.run();
                 horse2.run();
             }
@@ -195,33 +190,33 @@ function HorseRacing() {
     // Input button function
     {
         /*
-                    // Timer function
-                    function startTimer(duration, display) {
-                        var timer = duration,
-                            minutes,
-                            seconds;
-                        setInterval(function () {
-                            minutes = parseInt(timer / 60, 10);
-                            seconds = parseInt(timer % 60, 10);
+                        // Timer function
+                        function startTimer(duration, display) {
+                            var timer = duration,
+                                minutes,
+                                seconds;
+                            setInterval(function () {
+                                minutes = parseInt(timer / 60, 10);
+                                seconds = parseInt(timer % 60, 10);
 
-                            minutes = minutes < 10 ? "0" + minutes : minutes;
-                            seconds = seconds < 10 ? "0" + seconds : seconds;
+                                minutes = minutes < 10 ? "0" + minutes : minutes;
+                                seconds = seconds < 10 ? "0" + seconds : seconds;
 
-                            display.textContent = minutes + ":" + seconds;
+                                display.textContent = minutes + ":" + seconds;
 
-                            if (--timer < 0) {
-                                //when countdown time reaches 00 display property
-                                //will be changed to none for 15 seconds.
-                                document.getElementById("countdownTimer").innerHTML = "Running";
-                                //Trigerring the start button.
-                                document.getElementById("start").click();
-                                //This async function will check the winner. Till then
-                                // the innerHtml will be Running
-                                timer = duration;
-                            }
-                        }, 1000);
-                    }
-                */
+                                if (--timer < 0) {
+                                    //when countdown time reaches 00 display property
+                                    //will be changed to none for 15 seconds.
+                                    document.getElementById("countdownTimer").innerHTML = "Running";
+                                    //Trigerring the start button.
+                                    document.getElementById("start").click();
+                                    //This async function will check the winner. Till then
+                                    // the innerHtml will be Running
+                                    timer = duration;
+                                }
+                            }, 1000);
+                        }
+                    */
     }
     window.onload = function () {
         window.resizeTo(window.screen.availWidth, window.screen.availHeight);
@@ -242,19 +237,32 @@ function HorseRacing() {
         }
     }
 
+    // function to update balance on server
+    async function updateBalance(condition) {
+        //initilizing database to update the balance
+        const query = new Moralis.Query("_User");
+        const userData = await query.find();
+        let user = userData[0]
+        if (condition == 'win') {
+            user.set("balance", setBalance(balance + betAmount));
+            await user.save();
+        }
+        else if (condition == 'lose') {
+            user.set("balance", setBalance(balance - betAmount));
+            await user.save();
+        }
+    }
+
+
+
+
     function confirmBet() {
         if (!selectedAnimal.white && !selectedAnimal.blue) {
             let betBtns = document.getElementsByClassName("bet-btn");
             for (let i = 0; i < betBtns.length; i++) {
                 betBtns[i].setAttribute("style", "border-color: red");
             }
-            setSelectedAnimal(selectedAnimal);
-            setbetAmount(betAmount);
-            console.log(betAmount);
-            console.log(selectedAnimal);
         } else {
-            setSelectedAnimal(selectedAnimal);
-            setbetAmount(betAmount);
             console.log(betAmount);
             console.log(selectedAnimal);
         }
@@ -336,6 +344,7 @@ function HorseRacing() {
                                     `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                 }
                                 parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                                controls={false}
                                 onChange={(e) => {
                                     setbetAmount(e);
                                 }}
