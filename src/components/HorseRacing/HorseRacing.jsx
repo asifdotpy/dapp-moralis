@@ -24,7 +24,7 @@ function HorseRacing() {
         blue: false,
     });
     //   const [timer, setTimer] = useState(0)
-    const [balance, setBalance] = useState(0);
+    const [balance, setBalance] = useState(0); //FIXME: at the end of the execution balance auto sets to 0. need to fix it.
     const num_lap = 1;
     //  setTimer(Date.now() + 10000);
     // console.log(Date.now(), typeof Date.now())
@@ -142,7 +142,7 @@ function HorseRacing() {
             //Push the horse number to results array, according the the results array, we know the order of race results
             results.push(this.number);
 
-            //Win horse
+            // FIXME: it always shows winner. need to fix it asap.
             if (results.length == 1) {
                 //If win horse is the bet horse, then add the fund
                 if (this.number == selectedAnimal.white ? 1 : 2) {
@@ -237,7 +237,7 @@ function HorseRacing() {
         }
     }
 
-    // function to update balance on server
+    // FIXME: after this fucntion ran balance sets into its initial value 0.
     async function updateBalance(condition) {
         //initilizing database to update the balance
         const query = new Moralis.Query("_User");
