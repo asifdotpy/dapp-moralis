@@ -6,7 +6,7 @@ import { Button, Space, InputNumber } from "antd";
 import { useMoralis } from "react-moralis";
 import Countdown from "react-countdown";
 
-var timer = Date.now() + 30000;
+var timer = Date.now() + 10000;
 
 function HorseRacing() {
     //instantiate variables
@@ -187,58 +187,19 @@ function HorseRacing() {
         };
     });
 
-    // Input button function
-    {
-        /*
-                        // Timer function
-                        function startTimer(duration, display) {
-                            var timer = duration,
-                                minutes,
-                                seconds;
-                            setInterval(function () {
-                                minutes = parseInt(timer / 60, 10);
-                                seconds = parseInt(timer % 60, 10);
+    // Horse function ends
 
-                                minutes = minutes < 10 ? "0" + minutes : minutes;
-                                seconds = seconds < 10 ? "0" + seconds : seconds;
 
-                                display.textContent = minutes + ":" + seconds;
-
-                                if (--timer < 0) {
-                                    //when countdown time reaches 00 display property
-                                    //will be changed to none for 15 seconds.
-                                    document.getElementById("countdownTimer").innerHTML = "Running";
-                                    //Trigerring the start button.
-                                    document.getElementById("start").click();
-                                    //This async function will check the winner. Till then
-                                    // the innerHtml will be Running
-                                    timer = duration;
-                                }
-                            }, 1000);
-                        }
-                    */
-    }
     window.onload = function () {
         window.resizeTo(window.screen.availWidth, window.screen.availHeight);
     };
 
     // This function will change the css property of selected button
 
-    async function animalSelect() {
-        // Add active class to the current button (highlight it)
-        var animalSelect = await document.getElementById("animalSelect");
-        var btns = await animalSelect.getElementsByClassName("bn28");
-        for (var i = 0; i < btns.length; i++) {
-            btns[i].addEventListener("click", function () {
-                var current = document.getElementsByClassName("activeBtn");
-                current[0].className = current[0].className.replace(" activeBtn", "");
-                this.className += " activeBtn";
-            });
-        }
-    }
-
     // FIXME: after this fucntion ran balance sets into its initial value 0.
     async function updateBalance(condition) {
+        console.log("updatebalance func is executed")
+        console.log(balance);
         //initilizing database to update the balance
         const query = new Moralis.Query("_User");
         const userData = await query.find();
