@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./styles/nftBalance.css";
 import Address from "../components/Address/Address";

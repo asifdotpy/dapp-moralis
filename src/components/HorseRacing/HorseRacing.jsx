@@ -10,7 +10,7 @@ var timer = Date.now() + 10000;
 
 function HorseRacing() {
   //instantiate variables
-  console.log("Horseracing function executed!!")
+  console.log("Horseracing function executed!!");
   const {
     isWeb3Enabled,
     enableWeb3,
@@ -161,6 +161,7 @@ function HorseRacing() {
   var results = [];
   //Start the function when the document loaded
   document.addEventListener("DOMContentLoaded", function (event) {
+    console.log(event);
     var horse1 = new Horse("horse1", 20, 4);
     var horse2 = new Horse("horse2", 20, 8);
 
@@ -242,6 +243,7 @@ function HorseRacing() {
   };
 
   const renderer = ({ hours, minutes, seconds, completed }) => {
+    console.log(hours);
     if (completed) {
       // Render a completed state
       return <Completionist />;

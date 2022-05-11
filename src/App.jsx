@@ -10,7 +10,7 @@ import "antd/dist/antd.css";
 import "./style.css";
 import MenuItems from "./components/MenuItems";
 
-const { Header, Footer } = Layout;
+const { Header } = Layout;
 
 const styles = {
   content: {
@@ -40,7 +40,7 @@ const styles = {
     fontWeight: "600",
   },
 };
-const App = (isServerInfo) => {
+const App = () => {
   const { isWeb3Enabled, enableWeb3, isAuthenticated, isWeb3EnableLoading } =
     useMoralis();
 

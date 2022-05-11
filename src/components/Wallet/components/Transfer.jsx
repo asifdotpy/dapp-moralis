@@ -66,6 +66,8 @@ function Transfer() {
   async function transfer() {
     const { amount, receiver, asset } = tx;
 
+    console.log(asset);
+
     let options = {
       native: "native",
       amount: Moralis.Units.ETH(amount),

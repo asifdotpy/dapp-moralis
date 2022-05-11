@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/static/css/main.40d408ae.css",
+    "main.js": "/static/js/main.aea88433.js",
+    "static/media/boardApe.png": "/static/media/boardApe.8f4fdefefe2a9017fcd6.png",
+    "service-worker.js": "/service-worker.js",
+    "static/media/Coin98.png": "/static/media/Coin98.1e4e40738d77467e19ba.png",
+    "static/media/wallet-connect.svg": "/static/media/wallet-connect.304e327744ae5c9b1b62b58f50df6734.svg",
+    "static/media/body2.png": "/static/media/body2.ff50ee8335217e85c3cb.png",
+    "static/media/bnbemoji.png": "/static/media/bnbemoji.df52c5845ee30195d969.png",
+    "static/media/body1.png": "/static/media/body1.1ec9f3de2da66f9917a1.png",
+    "static/media/body3.png": "/static/media/body3.8ebc18dc408bc9d0e752.png",
+    "TokenPocket.svg": "/0ba487424539ab81b79fe14307e77334.svg",
+    "static/media/MathWallet.svg": "/static/media/MathWallet.19212234cfaec388ea6f339d0cea9df9.svg",
+    "SafePal.svg": "/e7068bbce0757878c2ef3e30191ce580.svg",
+    "index.html": "/index.html",
+    "main.40d408ae.css.map": "/static/css/main.40d408ae.css.map",
+    "main.aea88433.js.map": "/static/js/main.aea88433.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.40d408ae.css",
+    "static/js/main.aea88433.js"
+  ]
+}

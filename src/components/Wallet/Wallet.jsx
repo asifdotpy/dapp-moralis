@@ -1,7 +1,5 @@
 import Transfer from "./components/Transfer";
 import NativeBalance from "../NativeBalance";
-import Address from "../Address/Address";
-import Blockie from "../Blockie";
 import { Card } from "antd";
 
 const styles = {
