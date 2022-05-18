@@ -5,8 +5,18 @@ import { useState, useEffect } from "react";
 import { Button, Space, InputNumber } from "antd";
 import { useMoralis } from "react-moralis";
 import Countdown from "react-countdown";
+import Horse from "./Horse";
+import {
+  setTwenty,
+  setFifty,
+  setHundred,
+  setFiveHundred,
+  incrementByAmount,
+  betAmountSelector,
+} from "../../reducers/reducer";
+import { useSelector, useDispatch } from "react-redux";
 
-var timer = Date.now() + 10000;
+var timer = Date.now() + 100000;
 
 function HorseRacing() {
   //instantiate variables
@@ -18,8 +28,11 @@ function HorseRacing() {
     isWeb3EnableLoading,
     Moralis,
   } = useMoralis();
-
-  const [betAmount, setbetAmount] = useState(0);
+  //betAmount slice will be retrive from store.
+  const betAmount = useSelector(betAmountSelector);
+  // create usestate for betAmount
+  const [betAmountVar, setBetAmountVar] = useState(0);
+  const dispatch = useDispatch();
   const [selectedAnimal, setSelectedAnimal] = useState({
     white: false,
     blue: false,
@@ -36,159 +49,9 @@ function HorseRacing() {
     }
   }, [isAuthenticated, isWeb3Enabled]);
 
-  function Horse(id, x, y) {
-    this.element = document.getElementById(id); /*HTML element of the horse*/
-    this.speed =
-      Math.random() * 10 +
-      10; /*Initiate a random speed for each horse, the greater speed, the faster horse. The value is between 10 and 20*/
-    this.originX = x; /*Original X position*/
-    this.originY = y; /*Original Y position*/
-    this.x = x; /*Current X*/
-    this.y = y; /*Current Y*/
-    this.number = parseInt(
-      id.replace(/[\D]/g, ""),
-    ); /*Number of horse, number will be 1 or 2 or 3 or 4*/
-    this.lap = 0; //Current lap of the horse
-
-    this.moveRight = function () {
-      var horse = this; /*Assign horse to this object*/
-
-      /*Use setTimeout to have the delay in moving the horse*/
-      setTimeout(function () {
-        //Move the horse to right 1vw
-        horse.x++;
-        horse.element.style.left = horse.x + "vw";
-
-        //Check if goes through the start line, if horse runs enough number of laps and has pass the start line then stop
-        if (horse.lap == num_lap && horse.x > horse.originX + 6) {
-          horse.arrive();
-        } else {
-          //Make decision to move Down or not
-          //The width of the Down Road is 10wh, then the distance of each horse is 2.5vw (4 horses). The right position of the road is 82.5vw
-          //Continue to move right if not reach the point to turn
-          if (horse.x < 82.5 - horse.number * 2.5) {
-            horse.moveRight();
-          } else {
-            //Change HTML class of horse to runDown
-            horse.element.className = "horse runDown";
-            //Change the speed, will be random value from 10 to 20
-            horse.speed = Math.random() * 10 + 10;
-            horse.moveDown();
-          }
-        }
-      }, 1000 / this.speed);
-      /* 1000/this.speed is timeout time*/
-    };
-    /*Do the same for moveDown, moveLeft, moveUp*/
-    this.moveDown = function () {
-      var horse = this;
-      setTimeout(function () {
-        horse.y++;
-        horse.element.style.top = horse.y + "vh";
-        if (horse.y < horse.originY + 65) {
-          horse.moveDown();
-        } else {
-          horse.element.className = "horse runLeft";
-          horse.speed = Math.random() * 10 + 10;
-          horse.moveLeft();
-        }
-      }, 1000 / this.speed);
-    };
-    this.moveLeft = function () {
-      var horse = this;
-      setTimeout(function () {
-        horse.x--;
-        horse.element.style.left = horse.x + "vw";
-        if (horse.x > 12.5 - horse.number * 2.5) {
-          horse.moveLeft();
-        } else {
-          horse.element.className = "horse runUp";
-          horse.speed = Math.random() * 10 + 10;
-          horse.moveUp();
-        }
-      }, 1000 / this.speed);
-    };
-    this.moveUp = function () {
-      var horse = this;
-      setTimeout(function () {
-        horse.y--;
-        horse.element.style.top = horse.y + "vh";
-        if (horse.y > horse.originY) {
-          horse.speed = Math.random() * 10 + 10;
-          horse.moveUp();
-        } else {
-          horse.element.className = "horse runRight";
-          //Nearly finish the lap
-          horse.lap++;
-          horse.moveRight();
-        }
-      }, 1000 / this.speed);
-    };
-
-    /*Trigger the horse by run*/
-    this.run = function () {
-      this.element.className = "horse runRight";
-      this.moveRight();
-    };
-    this.arrive = function () {
-      //Stop the horse run by change class to standRight
-      this.element.className = "horse standRight";
-      this.lap = 1; //Reset the lap
-
-      /*Show the result*/
-      var tds = document.querySelectorAll("#results .result"); //Get all table cell to display the result
-      //results.length is the current arrive position
-      tds[results.length].className = "result horse" + this.number; //The class of result look like: result horse1...
-
-      //Push the horse number to results array, according the the results array, we know the order of race results
-      results.push(this.number);
-
-      // FIXME: it always shows winner. need to fix it asap.
-      if (results.length == 1) {
-        //If win horse is the bet horse, then add the fund
-        if (this.number == selectedAnimal.white ? 1 : 2) {
-          document.getElementById("resultText").innerHTML = "YOU WON";
-          updateBalance("win");
-        } else {
-          document.getElementById("resultText").innerHTML = "YOU LOST";
-          updateBalance("lose");
-        }
-      } else if (results.length == 4) {
-        //All horse arrived, enable again the Start Button
-      }
-    };
-  }
   var results = [];
+  console.log(betAmount);
   //Start the function when the document loaded
-  document.addEventListener("DOMContentLoaded", function (event) {
-    console.log(event);
-    var horse1 = new Horse("horse1", 20, 4);
-    var horse2 = new Horse("horse2", 20, 8);
-
-    //Event listener to the Start button
-    document.getElementById("start").onclick = function () {
-      //	console.log(amount);
-      //  bethorse = selectedAnimal();
-      //	console.log(bethorse);
-
-      if (balance < betAmount) {
-        alert("Not enough funds.");
-      } else if (num_lap <= 0) {
-        alert("Number of lap must be greater than 1.");
-      } else {
-        /*Started the game*/
-        this.disabled = true; /*Disable the start button*/
-        var tds = document.querySelectorAll("#results .result"); //Get all cells of result table.
-        for (var i = 0; i < tds.length; i++) {
-          tds[i].className = "result"; //Reset the result.
-        }
-
-        horse1.run();
-        horse2.run();
-      }
-    };
-  });
-
   // Horse function ends
 
   window.onload = function () {
@@ -198,41 +61,6 @@ function HorseRacing() {
   // This function will change the css property of selected button
 
   // FIXME: after this fucntion ran balance sets into its initial value 0.
-  async function updateBalance(condition) {
-    console.log("updatebalance func is executed");
-    console.log(balance);
-    //initilizing database to update the balance
-    const query = new Moralis.Query("_User");
-    const userData = await query.find();
-    let user = userData[0];
-    if (condition == "win") {
-      user.set("balance", setBalance(balance + betAmount));
-      await user.save();
-    } else if (condition == "lose") {
-      user.set("balance", setBalance(balance - betAmount));
-      await user.save();
-    }
-  }
-
-  function confirmBet() {
-    if (!selectedAnimal.white && !selectedAnimal.blue) {
-      let betBtns = document.getElementsByClassName("bet-btn");
-      for (let i = 0; i < betBtns.length; i++) {
-        betBtns[i].setAttribute("style", "border-color: red");
-      }
-    } else {
-      console.log(betAmount);
-      console.log(selectedAnimal);
-    }
-  }
-
-  // balanceUpdate will update it's value in every render. setBalance function is added into useEffect.
-  async function balanceCheck() {
-    const query = new Moralis.Query("_User");
-    const userData = await query.find();
-    setBalance(userData[0].get("balance"));
-    return userData;
-  }
 
   const Completionist = () => {
     let btns = document.getElementsByClassName("buttons");
@@ -243,7 +71,6 @@ function HorseRacing() {
   };
 
   const renderer = ({ hours, minutes, seconds, completed }) => {
-    console.log(hours);
     if (completed) {
       // Render a completed state
       return <Completionist />;
@@ -259,20 +86,8 @@ function HorseRacing() {
 
   return (
     <div className="gameBody">
-      <div id="horse1" className="horse standRight">
-        <div className="rider">
-          <div className="head"></div>
-          <div className="body"></div>
-        </div>
-      </div>
-
-      <div id="horse2" className="horse standRight">
-        <div className="rider">
-          <div className="head"></div>
-          <div className="body"></div>
-        </div>
-      </div>
-
+      <Horse id={"horse1"} number={1} x={20} y={4} />
+      <Horse id={"horse2"} number={1} x={20} y={8} />
       <div className="track">
         <div id="startline"></div>
 
@@ -305,7 +120,7 @@ function HorseRacing() {
                 parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
                 controls={false}
                 onChange={(e) => {
-                  setbetAmount(e);
+                  setBetAmountVar(e);
                 }}
               />
               <Space style={{ width: "100%" }}>
@@ -314,7 +129,7 @@ function HorseRacing() {
                   type="primary"
                   shape="round"
                   size={"small"}
-                  onClick={() => setbetAmount(20)}
+                  onClick={() => dispatch(setTwenty())}
                 >
                   20
                 </Button>
@@ -323,7 +138,7 @@ function HorseRacing() {
                   className="buttons fifty"
                   shape="round"
                   size={"small"}
-                  onClick={() => setbetAmount(50)}
+                  onClick={() => dispatch(setFifty())}
                 >
                   50
                 </Button>
@@ -332,7 +147,7 @@ function HorseRacing() {
                   className="buttons hundred"
                   shape="round"
                   size={"small"}
-                  onClick={() => setbetAmount(100)}
+                  onClick={() => dispatch(setHundred())}
                 >
                   100
                 </Button>
@@ -341,7 +156,7 @@ function HorseRacing() {
                   className="buttons five-hundred"
                   shape="round"
                   size={"small"}
-                  onClick={() => setbetAmount(500)}
+                  onClick={() => dispatch(setFiveHundred())}
                 >
                   500
                 </Button>

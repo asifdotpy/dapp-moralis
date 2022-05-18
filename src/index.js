@@ -5,6 +5,9 @@ import { MoralisProvider } from "react-moralis";
 import "./index.css";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import QuickStart from "components/QuickStart";
+import { Provider } from "react-redux";
+import store from "./store";
+
 
 /** Get your free Moralis Account https://moralis.io/ */
 
@@ -35,7 +38,9 @@ const Application = () => {
 
 ReactDOM.render(
   <StrictMode>
-    <Application />
+    <Provider store={ store }>
+      <Application />
+    </Provider>
   </StrictMode>,
   document.getElementById("root"),
 );
