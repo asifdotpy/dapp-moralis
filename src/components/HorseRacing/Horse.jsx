@@ -1,12 +1,5 @@
 import "./horsegame.css";
 import { useState } from "react";
-import {
-  setTwenty,
-  setFifty,
-  setHundred,
-  setFiveHundred,
-  incrementByAmount,
-} from "../../reducers/reducer";
 
 export default function Horse(props) {
   const [speed, setSpeed] = useState(Math.random() * 10 + 10);

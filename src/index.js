@@ -8,7 +8,6 @@ import QuickStart from "components/QuickStart";
 import { Provider } from "react-redux";
 import store from "./store";
 
-
 /** Get your free Moralis Account https://moralis.io/ */
 
 const APP_ID = process.env.REACT_APP_MORALIS_APPLICATION_ID;
@@ -38,7 +37,7 @@ const Application = () => {
 
 ReactDOM.render(
   <StrictMode>
-    <Provider store={ store }>
+    <Provider store={store}>
       <Application />
     </Provider>
   </StrictMode>,

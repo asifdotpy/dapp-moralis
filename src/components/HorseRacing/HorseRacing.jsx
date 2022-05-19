@@ -13,7 +13,12 @@ import {
   setFiveHundred,
   incrementByAmount,
   betAmountSelector,
-} from "../../reducers/reducer";
+} from "../../reducers/betAmountReducer";
+import {
+  selectedWhite,
+  selectedBlue,
+  selectedHorse,
+} from "../../reducers/selectedHorseReducer";
 import { useSelector, useDispatch } from "react-redux";
 
 var timer = Date.now() + 100000;
@@ -30,13 +35,11 @@ function HorseRacing() {
   } = useMoralis();
   //betAmount slice will be retrive from store.
   const betAmount = useSelector(betAmountSelector);
+  //TODO: selected animal querry
+  const selectedAnimal = useSelector(selectedHorse);
   // create usestate for betAmount
   const [betAmountVar, setBetAmountVar] = useState(0);
   const dispatch = useDispatch();
-  const [selectedAnimal, setSelectedAnimal] = useState({
-    white: false,
-    blue: false,
-  });
   //   const [timer, setTimer] = useState(0)
   const [balance, setBalance] = useState(0); //FIXME: at the end of the execution balance auto sets to 0. need to fix it.
   const num_lap = 1;
@@ -121,6 +124,7 @@ function HorseRacing() {
                 controls={false}
                 onChange={(e) => {
                   setBetAmountVar(e);
+                  dispatch(incrementByAmount(e));
                 }}
               />
               <Space style={{ width: "100%" }}>
@@ -178,7 +182,7 @@ function HorseRacing() {
                 style={{ width: "100%", marginTop: "25px" }}
                 // Disabled will be set here from Transfer.jsx
                 ghost={!selectedAnimal.white}
-                onClick={() => setSelectedAnimal({ white: true, blue: false })}
+                onClick={() => dispatch(selectedWhite())}
               >
                 White
               </Button>
@@ -190,7 +194,7 @@ function HorseRacing() {
                 style={{ width: "100%", marginTop: "25px" }}
                 // Disabled will be set here from Transfer.jsx
                 ghost={!selectedAnimal.blue}
-                onClick={() => setSelectedAnimal({ white: false, blue: true })}
+                onClick={() => dispatch(selectedBlue())}
               >
                 Blue
               </Button>
