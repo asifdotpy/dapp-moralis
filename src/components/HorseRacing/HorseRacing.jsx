@@ -19,6 +19,11 @@ import {
   selectedBlue,
   selectedHorse,
 } from "../../reducers/selectedHorseReducer";
+import {
+  balanceReducer,
+  userBalance,
+  fetchBalance,
+} from "reducers/balanceReducer";
 import { useSelector, useDispatch } from "react-redux";
 
 var timer = Date.now() + 100000;
@@ -37,12 +42,10 @@ function HorseRacing() {
   const betAmount = useSelector(betAmountSelector);
   //TODO: selected animal querry
   const selectedAnimal = useSelector(selectedHorse);
-  // create usestate for betAmount
-  const [betAmountVar, setBetAmountVar] = useState(0);
+  // instantiate balance bu using useSelector
+  const userCurrentBalance = useSelector(userBalance);
   const dispatch = useDispatch();
   //   const [timer, setTimer] = useState(0)
-  const [balance, setBalance] = useState(0); //FIXME: at the end of the execution balance auto sets to 0. need to fix it.
-  const num_lap = 1;
   //  setTimer(Date.now() + 10000);
   // console.log(Date.now(), typeof Date.now())
   useEffect(() => {
@@ -101,11 +104,11 @@ function HorseRacing() {
 
           <div id="bet">
             <p style={{ textAlign: "center" }}>
-              Balance: <span id="funds">{balance}</span>
+              Balance: <span id="funds">{userCurrentBalance}</span>
               <button
                 id="sync-btn"
                 style={{ margin: "0px 10px" }}
-                onClick={() => balanceCheck()}
+                onClick={() => dispatch(fetchBalance()).unwrap()}
               >
                 🔄
               </button>
@@ -123,7 +126,6 @@ function HorseRacing() {
                 parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
                 controls={false}
                 onChange={(e) => {
-                  setBetAmountVar(e);
                   dispatch(incrementByAmount(e));
                 }}
               />
