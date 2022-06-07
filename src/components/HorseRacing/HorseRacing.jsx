@@ -23,14 +23,13 @@ import {
   balanceReducer,
   userBalance,
   fetchBalance,
-} from "reducers/balanceReducer";
+} from "../../reducers/balanceReducer";
 import { useSelector, useDispatch } from "react-redux";
 
 var timer = Date.now() + 100000;
 
 function HorseRacing() {
   //instantiate variables
-  console.log("Horseracing function executed!!");
   const {
     isWeb3Enabled,
     enableWeb3,
@@ -56,7 +55,6 @@ function HorseRacing() {
   }, [isAuthenticated, isWeb3Enabled]);
 
   var results = [];
-  console.log(betAmount);
   //Start the function when the document loaded
   // Horse function ends
 

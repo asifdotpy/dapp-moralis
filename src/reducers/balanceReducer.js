@@ -14,7 +14,14 @@ export const fetchBalance = createAsyncThunk(
     async(thunkAPI) => {
     //by default Moralis query find the current user
     var response = await Moralis.User.current();
-    return JSON.stringify(response);
+    //retriving user address for various purpose
+    const userEthAddress = response.get("ethAddress")
+    const query = new Moralis.Query("_User");
+    query.equalTo("ethAddress", userEthAddress);
+    let results = await query.find();
+    // results returns a promise that has an attributes key
+    let balance = results[0]["attributes"]["balance"]
+    return balance;
 })
 
 const userBalanceSlice = createSlice({
@@ -25,8 +32,7 @@ const userBalanceSlice = createSlice({
     reducers: {},
     extraReducers: {
         [fetchBalance.fulfilled] (state, { payload }) {
-            var data = JSON.parse(payload)
-            state.value = data["balance"]
+            state.value = payload;
         }
     }
 })
