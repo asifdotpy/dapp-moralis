@@ -1,15 +1,13 @@
-const { request } = require("https-browserify");
-var timeSyncClient = require("timesync");
+const axios = require("axios");
 
-var ts = timeSyncClient.create({
-  server: "localhost:8081",
-});
-
-async function tsnow() {
-  var currentTime = await ts.now();
-  return currentTime;
+async function getTime() {
+  try {
+    const response = await axios.get("http://185.70.197.77:8081/currentTime");
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    return [];
+  }
 }
 
-console.log(new Date(ts.now()));
-
-ts.destroy();
+getTime();
