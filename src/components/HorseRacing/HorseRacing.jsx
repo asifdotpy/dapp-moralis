@@ -29,15 +29,15 @@ import { useSelector, useDispatch } from "react-redux";
 // TODO:for fetching data from server request module is used.
 // our server is running into upcloud(asaduzzaman)
 // url: http://185.70.197.77:8081
-const axios = require('axios');
+const axios = require("axios");
 async function getCurrentTime() {
   try {
-      const response = await axios.get("http://185.70.197.77:8081/currentTime");
-      console.log(response.data);
-      return response.data;
-    } catch (error) {
-      return [];
-    }
+    const response = await axios.get("http://185.70.197.77:8081/currentTime");
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    return [];
+  }
 }
 console.log(getCurrentTime());
 var timer = 10000000000000 + parseInt(getCurrentTime());
