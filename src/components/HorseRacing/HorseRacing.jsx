@@ -1,7 +1,7 @@
 //import statements goes here.
 
 import "./horsegame.css";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { Button, Space, InputNumber } from "antd";
 import { useMoralis } from "react-moralis";
 import Countdown from "react-countdown";
@@ -19,11 +19,7 @@ import {
   selectedBlue,
   selectedHorse,
 } from "../../reducers/selectedHorseReducer";
-import {
-  balanceReducer,
-  userBalance,
-  fetchBalance,
-} from "../../reducers/balanceReducer";
+import { userBalance, fetchBalance } from "../../reducers/balanceReducer";
 import { useSelector, useDispatch } from "react-redux";
 
 // TODO:for fetching data from server request module is used.
@@ -44,13 +40,8 @@ var timer = 10000000000000 + parseInt(getCurrentTime());
 
 function HorseRacing() {
   //instantiate variables
-  const {
-    isWeb3Enabled,
-    enableWeb3,
-    isAuthenticated,
-    isWeb3EnableLoading,
-    Moralis,
-  } = useMoralis();
+  const { isWeb3Enabled, enableWeb3, isAuthenticated, isWeb3EnableLoading } =
+    useMoralis();
   //betAmount slice will be retrive from store.
   const betAmount = useSelector(betAmountSelector);
   //TODO: selected animal querry
@@ -68,7 +59,6 @@ function HorseRacing() {
     }
   }, [isAuthenticated, isWeb3Enabled]);
 
-  var results = [];
   //Start the function when the document loaded
   // Horse function ends
 
@@ -89,6 +79,7 @@ function HorseRacing() {
   };
 
   const renderer = ({ hours, minutes, seconds, completed }) => {
+    console.log(hours);
     if (completed) {
       // Render a completed state
       return <Completionist />;
@@ -227,7 +218,7 @@ function HorseRacing() {
                 size="large"
                 style={{ width: "100%", marginTop: "25px" }}
                 // Disabled will be set here from Transfer.jsx
-                onClick={() => confirmBet()}
+                onClick={() => console.log("confirm button clicked!")}
               >
                 Confirm
               </Button>
