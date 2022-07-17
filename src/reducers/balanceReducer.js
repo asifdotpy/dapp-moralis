@@ -12,7 +12,7 @@ Moralis.start({ serverUrl, appId });
 export const fetchBalance = createAsyncThunk(
   "userBalance/fetchBalance",
   async (thunkAPI) => {
-    console.log(thunkAPI)
+    console.log(thunkAPI);
     //by default Moralis query find the current user
     var response = await Moralis.User.current();
     //retriving user address for various purpose

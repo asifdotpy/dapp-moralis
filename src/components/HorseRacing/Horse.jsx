@@ -4,16 +4,16 @@ import { useState } from "react";
 export default function Horse(props) {
   const [speed, setSpeed] = useState(Math.random() * 10 + 10);
   const originX = props.x;
- // const originY = props.y;
+  // const originY = props.y;
   var x = props.x;
   var y = props.y;
   const number = props.number;
   const [stand, setStand] = useState("horse standRight");
   const [positionX, setPositionX] = useState(x);
   //const [positionY, setPositionY] = useState(y);
-
-  //Adding all move into the parent function.
- /* 
+  console.log(speed, setSpeed, originX, y, number, setStand, setPositionX);
+  //Adding all move into the parent function;
+  /* 
     const run = () => {
     const moveRight = () => {
       setTimeout(function () {
