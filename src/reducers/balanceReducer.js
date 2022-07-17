@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, createAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 /* import moralis */
 const Moralis = require("moralis");
@@ -12,6 +12,7 @@ Moralis.start({ serverUrl, appId });
 export const fetchBalance = createAsyncThunk(
   "userBalance/fetchBalance",
   async (thunkAPI) => {
+    console.log(thunkAPI)
     //by default Moralis query find the current user
     var response = await Moralis.User.current();
     //retriving user address for various purpose
